@@ -62,6 +62,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  # Gem para criar nomes fakes para popular banco de dados
+  gem "faker", "~> 3.0"
 end
 
 group :test do
@@ -70,3 +72,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
