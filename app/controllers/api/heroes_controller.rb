@@ -4,7 +4,7 @@ class Api::HeroesController < ApplicationController
 
   # GET /heroes or /heroes.json
   def index
-    @heroes = Hero.all.organizar_por_nome
+    @heroes = Hero.search(params[:term]).organizar_por_nome 
     render json: @heroes
   end
 
