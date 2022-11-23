@@ -1,10 +1,13 @@
 class Api::HeroesController < ApplicationController
+  include Authenticable
+
+  before_action :authenticate_with_token, except: [:index, :show] 
   skip_before_action :verify_authenticity_token
   before_action :set_hero, only: %i[ show edit update destroy ]
 
   # GET /heroes or /heroes.json
   def index
-    @heroes = Hero.all.organizar_por_nome
+    @heroes = Hero.search(params[:term]).organizar_por_nome 
     render json: @heroes
   end
 
@@ -25,18 +28,9 @@ class Api::HeroesController < ApplicationController
 
   # POST /heroes or /heroes.json
   def create
-    @hero = Hero.new(hero_params)
+    @hero = Hero.create!(hero_params)
 
-    respond_to do |format|
-      if @hero.save
-        format.html { redirect_to hero_url(@hero), notice: "Hero was successfully created." }
-        format.json { render :show, status: :created, location: @hero }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @hero.errors, status: :unprocessable_entity }
-      end
-    end
-    render json: @hero
+    render json: @hero, status: :created
   end
 
   # PATCH/PUT /heroes/1 or /heroes/1.json
